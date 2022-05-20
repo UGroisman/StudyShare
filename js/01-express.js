@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 let posts = [];
+let usuarios = [];
 let detalles = [];
 
 app.use(express.json())
@@ -17,8 +18,7 @@ app.post("/crearPost", function (req, res) {
         titulo : req.body.titulo,
         descripcion : req.body.descripcion,
         ID: req.body.ID,
-        linkArchivo : req.body.linkArchivo,
-        materia: req.body.materia,
+        linkArchivo : req.body.linkArchivo
 
     };
 
@@ -29,17 +29,18 @@ app.post("/crearPost", function (req, res) {
 
 
 
-app.post("/mostrarPosts", function (req, res) {
+
+app.get("/mostrarPosts", function (req, res) {
     res.send(posts);
 })
 
-app.post("/filtrarPorID/:idpost?", function (req, res) {
+app.get("/filtrarPorID/:idpost?", function (req, res) {
     let idpost = req.params.idpost;
     let i = posts.find(post => post.ID == idpost);
     res.send(i);
 })
 
-app.post("/buscarPorNombre/:titulo?", function (req, res) {
+app.get("/buscarPorNombre/:titulo?", function (req, res) {
     
     let titulo = req.params.titulo;
     let i = posts.filter(post => post.titulo == titulo);
@@ -58,7 +59,7 @@ app.post("/buscarPorNombre/:titulo?", function (req, res) {
     res.send(o);
 })
 
-/*app.post("/todosDetalles/:idpost?", function (req, res) {
+app.get("/todosDetalles/:idpost?", function (req, res) {
     let idpost = req.params.idpost;
     let i = posts.find(post => post.ID == idpost);
     res.send(i);
