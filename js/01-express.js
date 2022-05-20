@@ -7,8 +7,18 @@ let detalles = [];
 
 app.use(express.json())
 
+const sql = require('mssql')
 
-
+async () => {
+    try {
+        // make sure that any items are correctly URL encoded in the connection string
+        await sql.connect('Server=A-BTA-07,1433;Database=StudyShare;User Id=ALMAGRO\46443039;')
+        const result = await sql.query`select * from Usuario where id = ${0}`
+        console.log(result)
+    } catch (err) {
+        // ... error checks
+    }
+}
 
  
 app.post("/crearPost", function (req, res) {
