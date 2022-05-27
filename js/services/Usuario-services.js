@@ -89,4 +89,4 @@ class UsuarioService{
 
 
 
-export default UsuarioServicios
+export default UsuarioService

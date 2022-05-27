@@ -51,6 +51,7 @@ class PostService{
         }
         return rowsAffected
     }
+    
     //hacer el d update
     updateNombre = async (ID, NewNombre) => {
         let rowsAffected = 0;
@@ -69,7 +70,7 @@ class PostService{
         return rowsAffected
     
     }
-    
+
     deleteById = async (ID) => {
         let rowsAffected = 0;
         console.log('debug en deñteado')
