@@ -1,4 +1,6 @@
-require("dotenv").config();
+
+
+/*
 const sql = require('mssql')
 const sqlConfig = {
   user: process.env.DB_USER,
@@ -26,4 +28,17 @@ async () => {
  } catch (err) {
   // ... error checks
  }
-} 
+} */
+
+const config = {
+  user: 'Gumpydev',
+  password: '1234',
+  server:'A-AMI-02',
+  database: 'StudyShare',
+  options :{
+    trustServerCertificate : true,
+    trustedConnection : true
+  }
+}
+
+export default config
