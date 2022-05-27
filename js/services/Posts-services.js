@@ -51,7 +51,7 @@ class PostService{
         }
         return rowsAffected
     }
-    
+
     //hacer el d update
     updateNombre = async (ID, NewNombre) => {
         let rowsAffected = 0;
@@ -61,7 +61,7 @@ class PostService{
             let result = await pool.request()
                     .input('pId', sql.Int, ID)
                     .input('pNewNombre', sql.NVarChar, NewNombre)
-                    .query("UPDATE Usuario SET nombre = @pNewNombre  where ID = @pId");
+                    .query("UPDATE Posts SET titulo = @pNewNombre  where ID = @pId");
                     
                  rowsAffected = result.rowsAffected; 
         }catch(error){
