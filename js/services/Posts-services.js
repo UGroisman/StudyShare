@@ -7,23 +7,22 @@ class PostService{
         console.log('debug en getAll')
         try {
             let pool = await sql.connect(config);
-            let result = await pool.request().query("select * from Posts");
+            let result = await pool.request().query("select Usuario.nombre, P.* from Posts P inner join Usuario on P.idUsuario = Usuario.ID");
             returnEntity = result.recordsets;
         }catch(error){
             console.log(error)
         }
         return returnEntity
-
     }
 
-    getById = async (ID) => {
+    getById = async (IDs) => {
         let returnEntity = null;
         console.log('debug en getbidi')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                    .input('pId', sql.Int, ID)
-                    .query("select * from Post where ID = @pId");
+                    .input('pId', sql.Int, IDs)
+                    .query("select Usuario.nombre, P.* from Posts P inner join Usuario on P.idUsuario = Usuario.ID where P.ID = @pId");
                     
             returnEntity = result.recordsets;
         }catch(error){
@@ -52,7 +51,7 @@ class PostService{
         }
         return rowsAffected
     }
-
+    //hacer el d update
     updateNombre = async (ID, NewNombre) => {
         let rowsAffected = 0;
         console.log('debug en deñteado')
@@ -63,13 +62,14 @@ class PostService{
                     .input('pNewNombre', sql.NVarChar, NewNombre)
                     .query("UPDATE Usuario SET nombre = @pNewNombre  where ID = @pId");
                     
-                 rowsAffected = result.rowsAffected;
+                 rowsAffected = result.rowsAffected; 
         }catch(error){
             console.log(error)
         }
         return rowsAffected
+    
     }
-
+    
     deleteById = async (ID) => {
         let rowsAffected = 0;
         console.log('debug en deñteado')
@@ -90,4 +90,4 @@ class PostService{
 
 
 
-export default UsuarioServicios
+export default PostService
