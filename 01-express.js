@@ -99,22 +99,35 @@ app.listen(PORT, function(err){
 
 import config from './js/services/db.js';
 import UsuarioService from './js/services/Usuario-services.js';
+import PostService from './js/services/Posts-services.js';
 import sql from 'mssql';
-
-
-//const express = require('express')
 import  express  from 'express'
+
+let srvUsuarios = new UsuarioService();
+let srvPosts = new PostService();
 const app = express()
 const port = 3000
 console.log(port);
 
-app.get('/', (req, res) => {
-    let srv = new UsuarioService();
 
-    let obj = srv.getById(1);
+app.get('/AgarrarUsuarioPorId/:Id?', (req, res) => {
+    let Id = req.params.Id;
+    let obj = srvUsuarios.getById(Id);
 
     obj.then(val => res.send(val))     
 })
+
+app.get('/AgarrarPostPorId/:Id?', (req, res) => {
+    let Id = req.params.Id;
+    let obj = srvPosts.getById(Id);
+
+    obj.then(val => res.send(val))     
+})
+
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
