@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const app = express();
 const PORT = 3000;
 let posts = [];
@@ -89,10 +89,34 @@ app.get("/cartones/:Nombre?", function(req,res){
 });
 */
  
-
+/*
 
 app.listen(PORT, function(err){
     if (err) console.log(err);
     console.log("Server listening on PORT", PORT);
 });
- 
+ */
+
+import config from './js/services/db.js';
+import UsuarioService from './js/services/Usuario-services.js';
+import sql from 'mssql';
+
+
+//const express = require('express')
+import  express  from 'express'
+const app = express()
+const port = 3000
+console.log(port);
+
+app.get('/', (req, res) => {
+    let srv = new UsuarioService();
+
+    let obj = srv.getById(1);
+
+    obj.then(val => res.send(val))     
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+

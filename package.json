@@ -1,11 +1,12 @@
 {
   "name": "-y",
   "version": "1.0.0",
+  "description": "SHEEEEEEEEEEEEEESHHHHH",
+  "main": "01-express.js",
   "type": "module",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node 01-express.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,12 @@
   },
   "homepage": "https://github.com/MatiMCode/StudyShare#readme",
   "dependencies": {
+    "@types/node": "^17.0.39",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "mssql": "^8.1.1",
+    "init": "^0.1.2",
+    "mssql": "^8.1.2",
     "tedious": "^14.5.0"
-  }
+  },
+  "keywords": []
 }
