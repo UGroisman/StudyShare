@@ -44,12 +44,6 @@ app.get("/mostrarPosts", function (req, res) {
     res.send(posts);
 })
 
-app.get("/filtrarPorID/:idpost?", function (req, res) {
-    let idpost = req.params.idpost;
-    let i = posts.find(post => post.ID == idpost);
-    res.send(i);
-})
-
 app.get("/buscarPorNombre/:titulo?", function (req, res) {
     
     let titulo = req.params.titulo;
@@ -67,12 +61,6 @@ app.get("/buscarPorNombre/:titulo?", function (req, res) {
     });
 
     res.send(o);
-})
-
-app.get("/todosDetalles/:idpost?", function (req, res) {
-    let idpost = req.params.idpost;
-    let i = posts.find(post => post.ID == idpost);
-    res.send(i);
 })
 
 
@@ -125,6 +113,23 @@ app.get('/AgarrarPostPorId/:Id?', (req, res) => {
 })
 
 
+app.post("/crearPost", function (req, res) {
+    let postCreado = {
+        idUsuario : req.body.idUsuario,
+        tipo : req.body.tipo,
+        titulo : req.body.titulo,
+        descripcion : req.body.descripcion,
+        linkArchivo : req.body.linkArchivo
+
+    };
+    
+    srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, postCreado.Puntuacion,linkArchivo);
+
+
+    //posts.push(postCreado);
+    
+    res.send("POST CREADO");
+})
 
 
 
