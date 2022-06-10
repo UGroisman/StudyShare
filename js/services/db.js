@@ -31,9 +31,9 @@ async () => {
 } */
 
 const config = {
-  user: 'Gumpydevv',
-  password: '1234',
-  server:'A-CIDI-117',
+  user: 'idkk',
+  password: 'idk',
+  server:'A-CIDI-135',
   database: 'StudyShare',
   options :{
     trustServerCertificate : true,
