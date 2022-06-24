@@ -12,7 +12,7 @@ class UsuarioService{
         }catch(error){
             console.log(error)
         }
-        return returnEntity
+        return returnEntity[0][0]
 
     }
 
@@ -29,7 +29,7 @@ class UsuarioService{
         }catch(error){
             console.log(error)
         }
-        return returnEntity
+        return returnEntity[0][0]
     }
 
     insert = async (mailNew, nombreNew, contrasenaNew, reputacionNew, fotodeperfilNew) => {

@@ -12,7 +12,7 @@ class PostService{
         }catch(error){
             console.log(error)
         }
-        return returnEntity
+        return returnEntity[0][0]
     }
 
     get5MoreRecent = async () => {
@@ -25,7 +25,7 @@ class PostService{
         }catch(error){
             console.log(error)
         }
-        return returnEntity
+        return returnEntity[0]
     }
 
     getById = async (IDs) => {
@@ -41,7 +41,7 @@ class PostService{
         }catch(error){
             console.log(error)
         }
-        return returnEntity
+        return returnEntity[0][0]
     }
 
     insert = async (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,idMateria) => {
