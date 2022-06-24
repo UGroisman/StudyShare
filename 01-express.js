@@ -56,8 +56,11 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
 })
 
 app.get('/TraerPostsMasRecientes/', (req, res) => {    //Funciona
-    let obj = srvPosts.get5MoreRecent();
-    obj.then(val => res.send(val))     
+    let obj = srvPosts.get5MoreRecent();   
+
+
+    obj.then(val => res.send(val)) 
+
 })
 
 app.get('/getEtiquetasByPostId/', (req, res) => {    //Funciona

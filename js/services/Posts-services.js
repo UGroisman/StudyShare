@@ -20,7 +20,7 @@ class PostService{
         console.log('debug en getAll IVAN')
         try {
             let pool = await sql.connect(config);
-            let result = await pool.request().query("select top 5 Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID");
+            let result = await pool.request().query("select Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID");
             returnEntity = result.recordsets;
         }catch(error){
             console.log(error)
@@ -28,7 +28,7 @@ class PostService{
         return returnEntity[0]
     }
 
-    getByTitleTop5 = async (TituloABuscar) => {
+    getByTitleTop5 = async (TituloABuscar) => {  //not funcar
         let returnEntity = null;
         console.log('debug en getAll')
         try {
