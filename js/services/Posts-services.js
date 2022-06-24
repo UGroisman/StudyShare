@@ -15,9 +15,22 @@ class PostService{
         return returnEntity
     }
 
+    get5MoreRecent = async () => {
+        let returnEntity = null;
+        console.log('debug en getAll')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request().query("select top 5 Usuario.nombre, P.* from Posts P inner join Usuario on P.idUsuario = Usuario.ID");
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity
+    }
+
     getById = async (IDs) => {
         let returnEntity = null;
-        console.log('debug en getbidi')
+        console.log('debug en get by id')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
@@ -31,9 +44,9 @@ class PostService{
         return returnEntity
     }
 
-    insert = async (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo) => {
+    insert = async (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,idMateria) => {
         let rowsAffected = 0;
-        console.log('debug en deñteado')
+        console.log('debug en insert')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
@@ -42,8 +55,9 @@ class PostService{
               .input('pdescripcion', sql.NVarChar, descripcion)
               .input('ppuntuacion', sql.Int, Puntuacion)
               .input('pidUsuario', sql.Int, idUsuario)
-             .input('plink', sql.NVarChar, linkArchivo)
-             .query("INSERT INTO Posts (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo) VALUES (@pidUsuario,@ptipo, @ptitulo, @pdescripcion, @ppuntuacion,@plink)");
+              .input('plink', sql.NVarChar, linkArchivo)
+              .input('pidMateria', sql.Int, idMateria)
+             .query("INSERT INTO Posts (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,IdMateria) VALUES (@pidUsuario,@ptipo, @ptitulo, @pdescripcion, @ppuntuacion,@plink,@pidMateria)");
                     
                  rowsAffected = result.rowsAffected;
         }catch(error){
@@ -55,7 +69,7 @@ class PostService{
     //hacer el d update
     updateNombre = async (ID, NewNombre) => {
         let rowsAffected = 0;
-        console.log('debug en deñteado')
+        console.log('debug en updateNombre')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
@@ -73,7 +87,7 @@ class PostService{
 
     deleteById = async (ID) => {
         let rowsAffected = 0;
-        console.log('debug en deñteado')
+        console.log('debug en borrar por id')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
