@@ -7,7 +7,7 @@ class PostService{
         console.log('debug en getAll')
         try {
             let pool = await sql.connect(config);
-            let result = await pool.request().query("select Usuario.nombre, P.* from Posts P inner join Usuario on P.idUsuario = Usuario.ID");
+            let result = await pool.request().query("select Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID");
             returnEntity = result.recordsets;
         }catch(error){
             console.log(error)
@@ -17,10 +17,25 @@ class PostService{
 
     get5MoreRecent = async () => {
         let returnEntity = null;
+        console.log('debug en getAll IVAN')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request().query("select top 5 Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID");
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0]
+    }
+
+    getByTitleTop5 = async (TituloABuscar) => {
+        let returnEntity = null;
         console.log('debug en getAll')
         try {
             let pool = await sql.connect(config);
-            let result = await pool.request().query("select top 5 Usuario.nombre, P.* from Posts P inner join Usuario on P.idUsuario = Usuario.ID");
+            let result = await pool.request()
+            .input('pTAB', sql.NVarChar, TituloABuscar)
+            .query("select * from Posts where titulo like '%@pTAB%' order by Puntuacion desc"); // fix this
             returnEntity = result.recordsets;
         }catch(error){
             console.log(error)
@@ -36,6 +51,22 @@ class PostService{
             let result = await pool.request()
                     .input('pId', sql.Int, IDs)
                     .query("select Usuario.nombre, P.* from Posts P inner join Usuario on P.idUsuario = Usuario.ID where P.ID = @pId");
+                    
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0][0]
+    }
+
+    getEtiquetasByPostId = async (IDs) => {  // ask next class
+        let returnEntity = null;
+        console.log('debug en get by id')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pId', sql.Int, IDs)
+                    .query("select etiquetas.nombre from Posts inner join EtiquetasPorPost on Posts.ID = EtiquetasPorPost.IdPost inner join etiquetas on EtiquetasPorPost.IdEtiqueta = etiquetas.ID where Posts.ID = @pId");
                     
             returnEntity = result.recordsets;
         }catch(error){
