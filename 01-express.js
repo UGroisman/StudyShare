@@ -6,7 +6,7 @@ import  express  from 'express'
 let srvUsuarios = new UsuarioService();
 let srvPosts = new PostService();
 const app = express()
-const port = 3000
+const port = 3004
 console.log(port);
 
 app.use(express.json())
@@ -19,7 +19,10 @@ app.get('/AgarrarUsuarioPorId/:Id?', (req, res) => {   //Funciona
     let Id = req.params.Id;
     let obj = srvUsuarios.getById(Id);
 
+
     obj.then(val => res.send(val))     
+    
+
 })
 
 app.get('/AgarrarPostPorId/:Id?', (req, res) => {    //Funciona
@@ -55,18 +58,42 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
     res.send("USUARIO CREADO"); //volver a mandar usuario
 })
 
-app.get('/TraerPostsMasRecientes/', (req, res) => {    //Funciona
+/*
+app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
     let obj = srvPosts.get5MoreRecent();   
 
-
+    obj.then(val => val.forEach( 
+        function(value){
+            console.log(value.ID)
+            let etiquetasNombres = srvPosts.getEtiquetasByPostId(value.ID);
+            etiquetasNombres.then(nombres => console.log(nombres))
+        }
+    ))
     obj.then(val => res.send(val)) 
+})
+*/
 
+app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
+    let obj = srvPosts.get5MoreRecent();   
+
+    obj.then(val => val.forEach( 
+        function(value){
+            console.log(value.ID)
+            let etiquetasNombres = srvPosts.getEtiquetasByPostId(value.ID);
+            etiquetasNombres.then(nombres => console.log(nombres))
+        }
+    ))
+    obj.then(val => res.send(val)) 
 })
 
-app.get('/getEtiquetasByPostId/', (req, res) => {    //Funciona
-    let obj = srvPosts.getEtiquetasByPostId(req.params.Id);
+
+
+
+app.get('/getComenatiosByPostId/:Id?', (req, res) => {    
+    let obj = srvPosts.getComenatiosByPostId(req.params.Id);
     obj.then(val => res.send(val))     
 })
+
 
 app.get('/BuscarPosts/:Titulo', (req, res) => {    //Funciona
     let obj = srvPosts.getByTitleTop5(req.params.Titulo);
