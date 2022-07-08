@@ -30,10 +30,23 @@ async () => {
  }
 } */
 
+/*
 const config = {
   user: 'idkk',
   password: 'idk',
   server:'A-CIDI-157',
+  database: 'StudyShare',
+  options :{
+    trustServerCertificate : true,
+    trustedConnection : true
+  }
+}*/
+
+
+const config = {
+  user: 'idkk',
+  password: 'idk',
+  server:'DESKTOP-93Q0Q0S',
   database: 'StudyShare',
   options :{
     trustServerCertificate : true,
