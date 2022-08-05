@@ -3,30 +3,51 @@ import sql from 'mssql'
 
 class PostService{
     getAll = async () => {
-        let returnEntity = null;
+        const query = "select Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID";
         console.log('debug en getAll')
-        try {
-            let pool = await sql.connect(config);
-            let result = await pool.request().query("select Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID");
-            returnEntity = result.recordsets;
-        }catch(error){
-            console.log(error)
-        }
+        let pool = await sql.connect(config);
+        let result = await pool.request()
+                        .query(query);
+        const returnEntity = result.recordsets;
         return returnEntity[0][0]
     }
 
     get5MoreRecent = async () => {
         let returnEntity = null;
+        let etiquetasReturn = null;
+
         console.log('debug en getAll IVAN')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request().query("select Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID");
-            returnEntity = result.recordsets;
+/*            
+            let pool2 = await sql.connect(config);
+            let result2 = await pool.request().query("select etiquetas.nombre, Posts.ID from Posts inner join EtiquetasPorPost on Posts.ID = EtiquetasPorPost.IdPost inner join etiquetas on EtiquetasPorPost.IdEtiqueta = etiquetas.ID ");
+        
+            
+*/           returnEntity = result.recordsets;
+/*            etiquetasReturn = result2.recordsets;
+            //console.log(etiquetasReturn[0][0]);
+            returnEntity[0].push(etiquetasReturn[0]);
+*/
         }catch(error){
             console.log(error)
         }
-        return returnEntity[0]
+
+        return returnEntity[0];
     }
+
+    getEtiquetasPorId = async (IDs) => {
+        const query = "select etiquetas.nombre from Posts inner join EtiquetasPorPost on Posts.ID = EtiquetasPorPost.IdPost inner join etiquetas on EtiquetasPorPost.IdEtiqueta = etiquetas.ID where Posts.ID = @pId";
+        const pool = await sql.connect(config);
+        const rows = await pool.request()
+            .input('pId', sql.Int, IDs)
+            .query(query)
+            .catch(console.error);
+        const tags = rows.recordsets[0].map(row => row.nombre);
+        return tags;
+    }
+
 
     getByTitleTop5 = async (TituloABuscar) => {  //not funcar
         let returnEntity = null;
@@ -51,22 +72,6 @@ class PostService{
             let result = await pool.request()
                     .input('pId', sql.Int, IDs)
                     .query("select Usuario.nombre, P.* from Posts P inner join Usuario on P.idUsuario = Usuario.ID where P.ID = @pId");
-                    
-            returnEntity = result.recordsets;
-        }catch(error){
-            console.log(error)
-        }
-        return returnEntity[0][0]
-    }
-
-    getEtiquetasByPostId = async (IDs) => {  // ask next class
-        let returnEntity = null;
-        console.log('debug en get by id')
-        try {
-            let pool = await sql.connect(config);
-            let result = await pool.request()
-                    .input('pId', sql.Int, IDs)
-                    .query("select etiquetas.nombre from Posts inner join EtiquetasPorPost on Posts.ID = EtiquetasPorPost.IdPost inner join etiquetas on EtiquetasPorPost.IdEtiqueta = etiquetas.ID where Posts.ID = @pId");
                     
             returnEntity = result.recordsets;
         }catch(error){

@@ -18,20 +18,17 @@ app.use(cors({
 }));
 
 app.get('/AgarrarUsuarioPorId/:Id?', (req, res) => {   //Funciona
-    let Id = req.params.Id;
-    let obj = srvUsuarios.getById(Id);
-
-
-    obj.then(val => res.send(val))     
+    const Id = req.params.Id;
+    srvUsuarios.getById(Id)
+        .then(val => res.send(val))     
     
 
 })
 
 app.get('/AgarrarPostPorId/:Id?', (req, res) => {    //Funciona
-    let Id = req.params.Id;
-    let obj = srvPosts.getById(Id);
-
-    obj.then(val => res.send(val))     
+    const Id = req.params.Id;
+    srvPosts.getById(Id)
+        .then(val => res.send(val))     
 })
 
 
@@ -50,10 +47,10 @@ app.post("/crearPost", function (req, res) {     //Funciona!!!!
 
 app.post("/crearUsuario", function (req, res) {   //Funciona
     let usuarioCreado = {
-    mail : req.body.mail, 
-    nombre : req.body.nombre,
-    contrasena : req.body.contrasena,
-    fotodeperfil : req.body.fotodeperfil,
+        mail : req.body.mail, 
+        nombre : req.body.nombre,
+        contrasena : req.body.contrasena,
+        fotodeperfil : req.body.fotodeperfil,
     };
 
     srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil);
@@ -76,30 +73,26 @@ app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
 */
 
 app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
-    let obj = srvPosts.get5MoreRecent();   
-
-    obj.then(val => val.forEach( 
-        function(value){
-            console.log(value.ID)
-            let etiquetasNombres = srvPosts.getEtiquetasByPostId(value.ID);
-            etiquetasNombres.then(nombres => console.log(nombres))
-        }
-    ))
-    obj.then(val => res.send(val)) 
+    srvPosts.get5MoreRecent()
+        .then(async posts => {
+            for (const post of posts)
+                post.tags = await srvPosts.getEtiquetasPorId(post.ID);
+            res.json(posts);
+        });
 })
 
 
 
 
-app.get('/getComenatiosByPostId/:Id?', (req, res) => {    
-    let obj = srvPosts.getComenatiosByPostId(req.params.Id);
-    obj.then(val => res.send(val))     
+app.get('/getComenatiosByPostId/:Id?', (req, res) => {    //lel?
+    srvPosts.getComenatiosByPostId(req.params.Id)
+        .then(val => res.send(val));
 })
 
 
 app.get('/BuscarPosts/:Titulo', (req, res) => {    //Funciona
-    let obj = srvPosts.getByTitleTop5(req.params.Titulo);
-    obj.then(val => res.send(val))     
+    srvPosts.getByTitleTop5(req.params.Titulo)
+        .then(val => res.send(val));     
 })
 
 app.listen(port, () => {
