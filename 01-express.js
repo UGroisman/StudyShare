@@ -114,6 +114,11 @@ app.get('/BuscarPosts/:Titulo', (req, res) => {    //Funciona
         .then(val => res.send(val));     
 })
 
+app.get('/iniciarSession/:nombre?&:contrasena?', (req, res) => {    //Funciona
+    srvUsuarios.iniciarSession(req.params.nombre, req.params.contrasena)
+        .then(val => res.send(val));     
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

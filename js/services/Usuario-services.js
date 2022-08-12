@@ -106,7 +106,13 @@ class UsuarioService{
         }catch(error){
             console.log(error)
         }
-        return rowsAffected
+        
+        if (rowsAffected==1){
+            return false;
+        }else{
+            return true;
+        }
+
     }
 
     deleteById = async (ID) => {
@@ -125,8 +131,29 @@ class UsuarioService{
         return rowsAffected
     }
 
+
+
+    iniciarSession = async (usuario, contrasena) => {
+        let rowsAffected = 0;
+        console.log('debug en getbidi')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pUsuario', sql.NVarChar, usuario)
+                    .input('pConstrasena', sql.NVarChar, contrasena)
+                    .query("select * from Usuario where nombre = @pUsuario AND contrasena = @pConstrasena");
+                    
+                    rowsAffected = result.rowsAffected;
+        }catch(error){
+            console.log(error)
+        }
+
+        if (rowsAffected==1){
+            return true;
+        }else{
+            return false
+        }
+    }
 }
-
-
 
 export default UsuarioService
