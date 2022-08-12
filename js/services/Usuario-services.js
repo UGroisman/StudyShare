@@ -38,14 +38,54 @@ class UsuarioService{
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                .input('pmailNew', sql.NVarChar, mailNew)
-                .input('pnombreNew', sql.NVarChar, nombreNew)
-              .input('pcontrasenaNew', sql.NVarChar, contrasenaNew)
-             .input('preputacionNew', sql.Int, reputacionNew)
-             .input('pfotodeperfilNew', sql.NVarChar, fotodeperfilNew)
-             .query("INSERT INTO Usuario (mail, nombre, contrasena, reputacion, fotodeperfil) VALUES (@pmailNew, @pnombreNew, @pcontrasenaNew, @preputacionNew, @pfotodeperfilNew)");
+            .input('pmailNew', sql.NVarChar, mailNew)
+            .input('pnombreNew', sql.NVarChar, nombreNew)
+            .input('pcontrasenaNew', sql.NVarChar, contrasenaNew)
+            .input('preputacionNew', sql.Int, reputacionNew)
+            .input('pfotodeperfilNew', sql.NVarChar, fotodeperfilNew)
+            .query("INSERT INTO Usuario (mail, nombre, contrasena, reputacion, fotodeperfil) VALUES (@pmailNew, @pnombreNew, @pcontrasenaNew, @preputacionNew, @pfotodeperfilNew)");
                     
                  rowsAffected = result.rowsAffected;
+        }catch(error){
+            console.log(error)
+        }
+        return rowsAffected
+    }
+
+
+    verificarNombre = async (nombre) => {
+        let rowsAffected = 0;
+
+        console.log('debug en verificar Nombre')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+            .input('pNombre', sql.NVarChar, nombre)
+            .query("select * from Usuario where nombre = @pNombre");  
+            rowsAffected = await result.rowsAffected;
+        }catch(error){
+            console.log(error)
+        }
+
+
+        if (rowsAffected==1){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+    verificarMail = async (mail) => {
+        let rowsAffected = 0;
+
+        console.log('debug en verificar mail')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+            .input('pMail', sql.NVarChar, mail)
+            .query("select * from Usuario where mail = @pMail");  
+            rowsAffected = result.rowsAffected;
         }catch(error){
             console.log(error)
         }

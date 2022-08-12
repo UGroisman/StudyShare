@@ -57,6 +57,25 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
     res.send("USUARIO CREADO"); //volver a mandar usuario
 })
 
+app.get("/VerificarMaile/:nombre?", function (req, res) {   //Funciona
+    
+    srvUsuarios.verificarMail(req.params.nombre)
+    .then(val =>{res.send(val)})
+
+
+})
+
+app.get("/VerificarNombre/:nombre?", function (req, res) {   //Funciona
+    
+    srvUsuarios.verificarNombre(req.params.nombre)
+    
+    .then(val =>{res.send(val)})
+
+    //res.send("1");
+
+
+})
+
 /*
 app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
     let obj = srvPosts.get5MoreRecent();   
