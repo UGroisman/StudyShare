@@ -2,7 +2,7 @@ import UsuarioService from './js/services/Usuario-services.js';
 import PostService from './js/services/Posts-services.js';
 import cors from 'cors';
 import  express  from 'express';
-import MateriaService from './js/services/materias-services.js';
+import MateriaService from './js/services/materias-services.js ';
 
 let srvUsuarios = new UsuarioService();
 let srvPosts = new PostService();
