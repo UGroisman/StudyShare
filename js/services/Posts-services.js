@@ -81,7 +81,7 @@ class PostService{
         return returnEntity[0][0]
     }
 
-    getComenatiosByPostId = async (IDs) => {  // ask next class
+    getComentariosByPostId = async (IDs) => {  // ask next class
         let returnEntity = null;
         console.log('debug en get by id')
         try {
@@ -103,14 +103,14 @@ class PostService{
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                .input('ptipo', sql.Bit, tipo)
-                .input('ptitulo', sql.NVarChar, titulo)
+              .input('ptipo', sql.Bit, tipo)
+              .input('ptitulo', sql.NVarChar, titulo)
               .input('pdescripcion', sql.NVarChar, descripcion)
               .input('ppuntuacion', sql.Int, Puntuacion)
               .input('pidUsuario', sql.Int, idUsuario)
               .input('plink', sql.NVarChar, linkArchivo)
               .input('pidMateria', sql.Int, idMateria)
-             .query("INSERT INTO Posts (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,IdMateria) VALUES (@pidUsuario,@ptipo, @ptitulo, @pdescripcion, @ppuntuacion,@plink,@pidMateria)");
+              .query("INSERT INTO Posts (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,IdMateria,fecha) VALUES (@pidUsuario,@ptipo, @ptitulo, @pdescripcion, @ppuntuacion,@plink,@pidMateria,getDATE())");
                     
                  rowsAffected = result.rowsAffected;
         }catch(error){

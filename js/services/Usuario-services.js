@@ -135,6 +135,7 @@ class UsuarioService{
 
     iniciarSession = async (usuario, contrasena) => {
         let rowsAffected = 0;
+        let usuarioADevolver = null;
         console.log('debug en getbidi')
         try {
             let pool = await sql.connect(config);
@@ -144,14 +145,16 @@ class UsuarioService{
                     .query("select * from Usuario where nombre = @pUsuario AND contrasena = @pConstrasena");
                     
                     rowsAffected = result.rowsAffected;
+                    usuarioADevolver = result.recordsets;
+                    console.log(usuarioADevolver);
         }catch(error){
             console.log(error)
         }
 
         if (rowsAffected==1){
-            return true;
+            return usuarioADevolver[0][0];
         }else{
-            return false
+            return false;
         }
     }
 }
