@@ -1,10 +1,12 @@
 import UsuarioService from './js/services/Usuario-services.js';
 import PostService from './js/services/Posts-services.js';
 import cors from 'cors';
-import  express  from 'express'
+import  express  from 'express';
+import MateriaService from './js/services/materias-services.js';
 
 let srvUsuarios = new UsuarioService();
 let srvPosts = new PostService();
+let srvMaterias = new MateriaService();
 const app = express();
 const port = 3004;
 console.log(port);
@@ -20,6 +22,12 @@ app.get('/AgarrarUsuarioPorId/:Id?', (req, res) => {   //Funciona
     srvUsuarios.getById(Id)
         .then(val => res.send(val))     
     
+
+})
+
+app.get('/AgarrarTodasLasMaterias',(req,res)=>{
+
+    srvMaterias.getAll().then(val=>{res.send(val)})
 
 })
 
