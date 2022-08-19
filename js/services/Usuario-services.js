@@ -32,6 +32,23 @@ class UsuarioService{
         return returnEntity[0][0]
     }
 
+    getByName = async (nombre) => {
+        let returnEntity = null;
+        console.log('debug en getbiNAME')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pNombre', sql.VarChar, nombre)
+                    .query("select * from Usuario where nombre = @pNombre");
+                    
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        console.log(returnEntity);
+        return returnEntity[0][0];
+    }
+
     insert = async (mailNew, nombreNew, contrasenaNew, reputacionNew, fotodeperfilNew) => {
         let rowsAffected = 0;
         console.log('debug en insert nombre')

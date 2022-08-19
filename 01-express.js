@@ -54,8 +54,8 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
     srvUsuarios.verificarNombre(usuarioCreado.nombre)
     .then(val=>{
         if (val==true){
-            srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil);
-            res.send("USUARIO CREADO"); //volver a mandar usuario
+            srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil)
+            srvUsuarios.getByName(usuarioCreado.nombre).then(val=>{res.send(val)})
         }else{
             res.send("NONO");
         }
@@ -67,6 +67,14 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
 app.get("/VerificarMaile/:nombre?", function (req, res) {   //Funciona
     
     srvUsuarios.verificarMail(req.params.nombre)
+    .then(val =>{res.send(val)})
+
+
+})
+
+app.get("/AgarrarPorNombre/:nombre?", function (req, res) {   //Funciona
+    
+    srvUsuarios.getByName(req.params.nombre)
     .then(val =>{res.send(val)})
 
 
