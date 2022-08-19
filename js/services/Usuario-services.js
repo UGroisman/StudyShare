@@ -34,6 +34,7 @@ class UsuarioService{
 
     getByName = async (nombre) => {
         let returnEntity = null;
+        let aaa=0;
         console.log('debug en getbiNAME')
         try {
             let pool = await sql.connect(config);
@@ -42,11 +43,15 @@ class UsuarioService{
                     .query("select * from Usuario where nombre = @pNombre");
                     
             returnEntity = result.recordsets;
+            aaa=result.rowsAffected;
         }catch(error){
             console.log(error)
         }
+
+        
         console.log(returnEntity);
-        return returnEntity[0][0];
+        return returnEntity;
+    
     }
 
     insert = async (mailNew, nombreNew, contrasenaNew, reputacionNew, fotodeperfilNew) => {

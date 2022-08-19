@@ -51,11 +51,12 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
         fotodeperfil : req.body.fotodeperfil,
     };
 
-    srvUsuarios.verificarNombre(usuarioCreado.nombre)
-    .then(val=>{
+    srvUsuarios.verificarNombre(usuarioCreado.nombre).then(val=>{
         if (val==true){
-            srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil)
-            srvUsuarios.getByName(usuarioCreado.nombre).then(val=>{res.send(val)})
+            srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil).then(
+
+                srvUsuarios.getByName(usuarioCreado.nombre).then(val=>{res.send(val)})
+            )
         }else{
             res.send("NONO");
         }
