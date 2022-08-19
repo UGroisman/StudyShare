@@ -34,7 +34,7 @@ class UsuarioService{
 
     insert = async (mailNew, nombreNew, contrasenaNew, reputacionNew, fotodeperfilNew) => {
         let rowsAffected = 0;
-        console.log('debug en deñteado')
+        console.log('debug en insert nombre')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
@@ -69,9 +69,12 @@ class UsuarioService{
 
 
         if (rowsAffected==1){
-            return false;
+            console.log("nel");
+            return false;   //Un nombre ya existe
+
         }else{
-            return true;
+            console.log("SEs");
+            return true;    //Un nombre no existe
         }
 
     }

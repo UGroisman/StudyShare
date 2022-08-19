@@ -3,12 +3,10 @@ import PostService from './js/services/Posts-services.js';
 import cors from 'cors';
 import  express  from 'express'
 
-/* nashe */
-
 let srvUsuarios = new UsuarioService();
 let srvPosts = new PostService();
-const app = express()
-const port = 3004
+const app = express();
+const port = 3004;
 console.log(port);
 
 app.use(express.json())
@@ -53,8 +51,17 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
         fotodeperfil : req.body.fotodeperfil,
     };
 
-    srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil);
-    res.send("USUARIO CREADO"); //volver a mandar usuario
+    srvUsuarios.verificarNombre(usuarioCreado.nombre)
+    .then(val=>{
+        if (val==true){
+            srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil);
+            res.send("USUARIO CREADO"); //volver a mandar usuario
+        }else{
+            res.send("NONO");
+        }
+    })
+
+    
 })
 
 app.get("/VerificarMaile/:nombre?", function (req, res) {   //Funciona
