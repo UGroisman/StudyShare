@@ -41,25 +41,6 @@ app.get('/AgarrarTodasLasMaterias',(req,res)=>{
     srvMaterias.getAll().then(val=>{res.send(val)})
 })
 
-app.get('/AgarrarPostPorId/:Id?', (req, res) => {    //Funciona
-    const Id = req.params.Id;
-    srvPosts.getById(Id)
-        .then(val => res.send(val))     
-})
-
-
-app.post("/crearPost", function (req, res) {     //Funciona!!!!
-    let postCreado = {
-    idUsuario : req.body.idUsuario, 
-    tipo : req.body.tipo,
-    titulo : req.body.titulo,
-    descripcion : req.body.descripcion,
-    linkArchivo : req.body.linkArchivo,
-    idMateria : req.body.idMateria
-    };
-    srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, 0,postCreado.linkArchivo,postCreado.idMateria);
-    res.send("POST CREADO"); //Volver a mandar el post
-})
 
 app.post("/crearUsuario", function (req, res) {   //Funciona
     let usuarioCreado = {
@@ -109,43 +90,6 @@ app.get("/VerificarNombre/:nombre?", function (req, res) {   //Funciona
 
 })
 
-/*
-app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
-    let obj = srvPosts.get5MoreRecent();   
-
-    obj.then(val => val.forEach( 
-        function(value){
-            console.log(value.ID)
-            let etiquetasNombres = srvPosts.getEtiquetasByPostId(value.ID);
-            etiquetasNombres.then(nombres => console.log(nombres))
-        }
-    ))
-    obj.then(val => res.send(val)) 
-})
-*/
-
-/*
-app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
-    srvPosts.get5MoreRecent()
-        .then(async posts => {
-            for (const post of posts)
-                post.tags = await srvPosts.getEtiquetasPorId(post.ID);
-            res.json(posts);
-        });
-})*/
-
-
-
-
-app.get('/getComenatiosByPostId/:Id?', (req, res) => {    //funciona
-    srvPosts.getComentariosByPostId(req.params.Id)
-        .then(val => res.send(val));
-})
-
-app.get('/getComenatiosByPostIdTop5/:Id?', (req, res) => {    //funciona
-    srvPosts.getComentariosByPostIdTop5(req.params.Id)
-        .then(val => res.send(val));
-})
 
 app.get('/getVotosByComentarioID/:Id?', async (req, res) => {    //
 
@@ -165,23 +109,6 @@ app.get('/getVotosByComentarioID/:Id?', async (req, res) => {    //
 
 })
 
-app.get('/getVotosByPostID/:Id?', async (req, res) => {    //
-
-    let votos = await srvPosts.getVotosHechosAPost(req.params.Id);
-    console.log(votos)
-    let counter = 0;
-    votos.forEach(voto=>{
-        if (voto.Voto == 1){
-            counter = counter + 1;
-        }
-    })
-
-    console.log(counter);
-    res.status(200).json({cantidad : counter })
-    //res.send(counter);
-
-})
-
 
 
 
@@ -193,11 +120,6 @@ app.post("/crearComentario", function (req, res) {     //Funciona!!!!
     };
     srvComentarios.insert(comentarioCreado.idUsuario,comentarioCreado.idPost,comentarioCreado.texto);
     res.send("COMENTARIO CREADO"); //Volver a mandar el post
-})
-
-app.get('/BuscarPosts/:Titulo', (req, res) => {    //Funciona
-    srvPosts.getByTitleTop5(req.params.Titulo)
-        .then(val => res.send(val));     
 })
 
 app.get('/iniciarSession/:nombre?&:contrasena?', (req, res) => {    //Funciona
