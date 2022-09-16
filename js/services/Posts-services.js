@@ -98,7 +98,21 @@ class PostService{
     }
 
 
-    
+    getComentariosByPostIdTop5 = async (IDs) => {  // ask next class
+        let returnEntity = null;
+        console.log('debug en get by id')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pId', sql.Int, IDs)
+                    .query("select top 5 C.IdUsuario, C.Texto from Comentario C INNER JOIN Posts ON C.IdPost = Posts.ID where Posts.ID = @pId");
+                    
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0]
+    }
 
     insert = async (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,idMateria) => {
         let rowsAffected = 0;

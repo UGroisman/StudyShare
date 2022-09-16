@@ -136,11 +136,26 @@ app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
 
 
 
-app.get('/getComenatiosByPostId/:Id?', (req, res) => {    //lel?
+app.get('/getComenatiosByPostId/:Id?', (req, res) => {    //funciona
     srvPosts.getComentariosByPostId(req.params.Id)
         .then(val => res.send(val));
 })
 
+app.get('/getComenatiosByPostIdTop5/:Id?', (req, res) => {    //funciona
+    srvPosts.getComentariosByPostIdTop5(req.params.Id)
+        .then(val => res.send(val));
+})
+
+
+app.post("/crearComentario", function (req, res) {     //Funciona!!!!
+    let comentarioCreado = {
+    idUsuario : req.body.idUsuario, 
+    idPost : req.body.idPost,
+    texto : req.body.texto
+    };
+    srvComentarios.insert(comentarioCreado.idUsuario,comentarioCreado.idPost,comentarioCreado.texto);
+    res.send("COMENTARIO CREADO"); //Volver a mandar el post
+})
 
 app.get('/BuscarPosts/:Titulo', (req, res) => {    //Funciona
     srvPosts.getByTitleTop5(req.params.Titulo)

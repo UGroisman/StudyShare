@@ -19,7 +19,25 @@ class ComentarioService{
 
     }
 
-    
+    insert = async (idUsuario,IdPost, Texto) => {
+        let rowsAffected = 0;
+        console.log('debug en insert')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+              .input('pIdUsuario', sql.Int, idUsuario)
+              .input('pIdPost', sql.Int, IdPost)
+              .input('pTexto', sql.NVarChar, Texto)
+              .query("insert into Comentario (IdUsuario,IdPost,Texto) VALUES (@pIdUsuario,@pIdPost,@pTexto)");
+                    
+                 rowsAffected = result.rowsAffected;
+        }catch(error){
+            console.log(error)
+        }
+        return rowsAffected
+    }
+
+
 }
 
 
