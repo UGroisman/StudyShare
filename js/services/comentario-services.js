@@ -37,6 +37,24 @@ class ComentarioService{
         return rowsAffected
     }
 
+    getVotosHechosAComentario   = async (IDs) => {
+        let returnEntity = null;
+        console.log('debug en get by id')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pId', sql.Int, IDs)
+                    /*.query("select  UPAC.IdUsuario as 'Usuario que voto', UPAC.Voto as 'Voto hecho', UPAC.IdComentario as 'comentarioVotado' from Comentario inner join UsuarioPuntajeAComentario UPAC on Comentario.ID = UPAC.IdComentario where ID = @pId");*/
+                    .query("select  UPAC.Voto from Comentario inner join UsuarioPuntajeAComentario UPAC on Comentario.ID = UPAC.IdComentario where ID = @pId");
+                    
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0]
+
+    }
+
 
 }
 

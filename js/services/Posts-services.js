@@ -89,7 +89,7 @@ class PostService{
             let result = await pool.request()
                     .input('pId', sql.Int, IDs)
                     .query("select C.IdUsuario, C.Texto from Comentario C INNER JOIN Posts ON C.IdPost = Posts.ID where Posts.ID = @pId");
-                    
+
             returnEntity = result.recordsets;
         }catch(error){
             console.log(error)

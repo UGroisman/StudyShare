@@ -146,6 +146,34 @@ app.get('/getComenatiosByPostIdTop5/:Id?', (req, res) => {    //funciona
         .then(val => res.send(val));
 })
 
+app.get('/getVotosByComentarioID/:Id?', async (req, res) => {    //
+    /*srvComentarios.getVotosHechosAComentario(req.params.Id)
+        .then(val =>{
+            let counter = 0;
+            val.map((vall)=>{
+            if (parseInt(vall.Voto)==1){
+                counter=counter++;
+            }})
+            res.send(counter)
+        });
+        //.then(val=>(res.send(val)))*/
+
+    let votos = await srvComentarios.getVotosHechosAComentario(req.params.Id);
+    console.log(votos)
+    let counter = 0;
+    votos.forEach(voto=>{
+        if (voto.Voto == 1){
+            counter = counter + 1;
+        }
+    })
+
+    console.log(counter);
+    res.send(counter);
+
+    })
+
+
+
 
 app.post("/crearComentario", function (req, res) {     //Funciona!!!!
     let comentarioCreado = {
