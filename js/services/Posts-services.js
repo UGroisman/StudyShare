@@ -114,6 +114,24 @@ class PostService{
         return returnEntity[0]
     }
 
+    getVotosHechosAPost   = async (IDs) => {
+        let returnEntity = null;
+        console.log('debug en get by id')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pId', sql.Int, IDs)
+                   
+                    .query("select  UPAP.Voto from Posts inner join UsuarioPuntajeAPost UPAP on Posts.ID = UPAP.IdPost where ID = @pId");
+                    
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0]
+
+    }
+
     insert = async (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,idMateria) => {
         let rowsAffected = 0;
         console.log('debug en insert')
