@@ -3,32 +3,41 @@ import PostService from './js/services/Posts-services.js';
 import cors from 'cors';
 import  express  from 'express';
 import MateriaService from './js/services/materias-services.js ';
+import ComentarioService from './js/services/comentario-services.js';
+
+import PostRouter from './js/controllers/postController.js';
 
 let srvUsuarios = new UsuarioService();
 let srvPosts = new PostService();
 let srvMaterias = new MateriaService();
+let srvComentarios = new ComentarioService();
+
 const app = express();
 const port = 3004;
 console.log(port);
 
-app.use(express.json())
 
+app.use(express.json())
 app.use(cors({
     origin: '*'
 }));
+app.use("/post",PostRouter);
+
+
+app.get('/AgarrarComentarioPorId/:Id?', (req, res) => {   //
+    const Id = req.params.Id;
+    srvComentarios.getCommentById(Id)
+        .then(val => res.send(val))     
+})
 
 app.get('/AgarrarUsuarioPorId/:Id?', (req, res) => {   //Funciona
     const Id = req.params.Id;
     srvUsuarios.getById(Id)
         .then(val => res.send(val))     
-    
-
 })
 
 app.get('/AgarrarTodasLasMaterias',(req,res)=>{
-
     srvMaterias.getAll().then(val=>{res.send(val)})
-
 })
 
 app.get('/AgarrarPostPorId/:Id?', (req, res) => {    //Funciona
@@ -58,7 +67,6 @@ app.post("/crearUsuario", function (req, res) {   //Funciona
         contrasena : req.body.contrasena,
         fotodeperfil : req.body.fotodeperfil,
     };
-
     srvUsuarios.verificarNombre(usuarioCreado.nombre).then(val=>{
         if (val==true){
             srvUsuarios.insert(usuarioCreado.mail, usuarioCreado.nombre, usuarioCreado.contrasena, 0, usuarioCreado.fotodeperfil).then(
@@ -115,6 +123,7 @@ app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
 })
 */
 
+/*
 app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
     srvPosts.get5MoreRecent()
         .then(async posts => {
@@ -122,13 +131,13 @@ app.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
                 post.tags = await srvPosts.getEtiquetasPorId(post.ID);
             res.json(posts);
         });
-})
+})*/
 
 
 
 
 app.get('/getComenatiosByPostId/:Id?', (req, res) => {    //lel?
-    srvPosts.getComenatiosByPostId(req.params.Id)
+    srvPosts.getComentariosByPostId(req.params.Id)
         .then(val => res.send(val));
 })
 

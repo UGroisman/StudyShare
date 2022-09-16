@@ -9,7 +9,7 @@ class PostService{
         let result = await pool.request()
                         .query(query);
         const returnEntity = result.recordsets;
-        return returnEntity[0][0]
+        return returnEntity[0]
     }
 
     get5MoreRecent = async () => {
@@ -96,6 +96,9 @@ class PostService{
         }
         return returnEntity[0]
     }
+
+
+    
 
     insert = async (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,idMateria) => {
         let rowsAffected = 0;
