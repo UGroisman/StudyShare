@@ -147,6 +147,8 @@ app.get('/getComenatiosByPostIdTop5/:Id?', (req, res) => {    //funciona
 })
 
 app.get('/getVotosByComentarioID/:Id?', async (req, res) => {    //
+
+    
     /*srvComentarios.getVotosHechosAComentario(req.params.Id)
         .then(val =>{
             let counter = 0;
@@ -168,9 +170,10 @@ app.get('/getVotosByComentarioID/:Id?', async (req, res) => {    //
     })
 
     console.log(counter);
-    res.send(counter);
+    res.status(200).json({cantidad : counter })
+    //res.send(counter);
 
-    })
+})
 
 
 
