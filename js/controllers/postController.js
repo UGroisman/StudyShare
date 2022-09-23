@@ -1,7 +1,9 @@
 import { Router } from "express";
 import PostService from '../services/Posts-services.js';
+import etiquetaService from '../services/etiqueta-services.js';
 
 let srvPosts = new PostService();
+let srvEtiqueta = new etiquetaService();
 
 const router = Router();
 
@@ -29,16 +31,35 @@ router.get('/AgarrarPostPorId/:Id?', (req, res) => {    //Funciona
         .then(val => res.send(val))     
 })
 
-router.post("/crearPost", function (req, res) {     //Funciona!!!!
+router.post("/crearPost", async (req, res) => {     //Funciona!!!!
     let postCreado = {
     idUsuario : req.body.idUsuario, 
     tipo : req.body.tipo,
     titulo : req.body.titulo,
     descripcion : req.body.descripcion,
     linkArchivo : req.body.linkArchivo,
-    idMateria : req.body.idMateria
+    idMateria : req.body.idMateria,
+    tags: req.body.tags
     };
-    srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, 0,postCreado.linkArchivo,postCreado.idMateria);
+    let tags = postCreado.tags;
+    let tagID = 0;
+
+    let idPost= 0;
+    idPost = await srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, 0,postCreado.linkArchivo,postCreado.idMateria);
+    
+    tags.forEach(tagNombre=>{
+        tagID=srvEtiqueta.getAffected(tagNombre)
+
+        if(tagID===0){
+            idEtiquetaCreada = srvEtiqueta.crearEtiqueta(tagNombre);
+            console.log(idEtiquetaCreada + "AAAAAAAAAAAA");
+           //    srvPosts.meterEtiquetaAPost(idPost,idEtiquetaCreada)
+        }
+    })
+    
+    console.log(idPost);
+
+
     res.send("POST CREADO"); //Volver a mandar el post?
 })
 
