@@ -42,17 +42,16 @@ router.post("/crearPost", async (req, res) => {     //Funciona!!!!
     tags: req.body.tags
     };
     let tags = postCreado.tags;
-    let tagID = 0;
+    let tagID = {};
 
     let idPost= 0;
     idPost = await srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, 0,postCreado.linkArchivo,postCreado.idMateria);
-    
+    // falta el if de que si bo existe esa tag
     tags.forEach(async tagNombre=>{ //por cada NOMBRE DE ETIQUETA EN EL ARRAY ETIQUETA
         tagID = await srvEtiqueta.getAffected(tagNombre)  // Te devuelve el ID de la etiqueta a partir del nombre
-        console.log(tagID) // 
-        srvPosts.meterEtiquetaAPost(tagID.ID,idPost)
-            console.log("INSERTADO NASHE")
-            console.log(srvPosts.getEtiquetasPorId(idPost))
+        srvPosts.meterEtiquetaAPost(tagID.ID,idPost.L) //tagID en realidad no es un int, sino que no se porque lo pone como {ID : 1}
+            
+        console.log(await srvPosts.getEtiquetasPorId(idPost.L)) 
         /*if(tagID===0){                              
             idEtiquetaCreada = srvEtiqueta.crearEtiqueta(tagNombre);
             //console.log(idEtiquetaCreada + "AAAAAAAAAAAA");
@@ -64,7 +63,7 @@ router.post("/crearPost", async (req, res) => {     //Funciona!!!!
     res.send("POST CREADO"); //Volver a mandar el post?
 })
 
-router.get('/getComenatiosByPostId/:Id?', (req, res) => {    //funciona
+router.get('/getComentariosByPostId/:Id?', (req, res) => {    //funciona
     srvPosts.getComentariosByPostId(req.params.Id)
         .then(val => res.send(val));
 })
