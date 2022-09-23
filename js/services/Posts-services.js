@@ -132,8 +132,26 @@ class PostService{
 
     }
 
+    meterEtiquetaAPost = async (tagID,postID) => {
+        let rowsAffected = null;
+
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+              .input('pTag', sql.Int, tagID)
+              .input('pPost', sql.Int, postID)
+              .query("insert into EtiquetasPorPost (IdEtiqueta,IdPost) values (@pTag,@pPost)");
+            rowsAffected = result.rowsAffected
+        }catch(error){
+            console.log(error)
+        }
+        return rowsAffected
+
+    }
+
+
     insert = async (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,idMateria) => {
-        let rowsAffected = 0;
+        let idPost = 0;
         console.log('debug en insert')
         try {
             let pool = await sql.connect(config);
@@ -147,12 +165,11 @@ class PostService{
               .input('pidMateria', sql.Int, idMateria)
               .query("INSERT INTO Posts (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,IdMateria,fecha) VALUES (@pidUsuario,@ptipo, @ptitulo, @pdescripcion, @ppuntuacion,@plink,@pidMateria,getDATE()) SELECT SCOPE_IDENTITY() as 'L'");
                     
-                 rowsAffected = result.recordsets[0][0];
+              idPost = result.recordsets[0][0];
         }catch(error){
             console.log(error)
         }
-        console.log(rowsAffected)
-        return rowsAffected
+        return idPost
     }
 
     //hacer el d update

@@ -13,8 +13,7 @@ class etiquetaService{
         }catch(error){
             console.log(error)
         }
-        console.log(rowsAffected)
-        return [rowsAffected]
+        return rowsAffected
     }
 
 

@@ -47,17 +47,18 @@ router.post("/crearPost", async (req, res) => {     //Funciona!!!!
     let idPost= 0;
     idPost = await srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, 0,postCreado.linkArchivo,postCreado.idMateria);
     
-    tags.forEach(tagNombre=>{
-        tagID=srvEtiqueta.getAffected(tagNombre)
-
-        if(tagID===0){
+    tags.forEach(async tagNombre=>{ //por cada NOMBRE DE ETIQUETA EN EL ARRAY ETIQUETA
+        tagID = await srvEtiqueta.getAffected(tagNombre)  // Te devuelve el ID de la etiqueta a partir del nombre
+        console.log(tagID) // 
+        srvPosts.meterEtiquetaAPost(tagID.ID,idPost)
+            console.log("INSERTADO NASHE")
+            console.log(srvPosts.getEtiquetasPorId(idPost))
+        /*if(tagID===0){                              
             idEtiquetaCreada = srvEtiqueta.crearEtiqueta(tagNombre);
-            console.log(idEtiquetaCreada + "AAAAAAAAAAAA");
-           //    srvPosts.meterEtiquetaAPost(idPost,idEtiquetaCreada)
-        }
+            //console.log(idEtiquetaCreada + "AAAAAAAAAAAA");
+           //srvPosts.meterEtiquetaAPost(idPost,idEtiquetaCreada)
+        }*/
     })
-    
-    console.log(idPost);
 
 
     res.send("POST CREADO"); //Volver a mandar el post?
@@ -68,7 +69,7 @@ router.get('/getComenatiosByPostId/:Id?', (req, res) => {    //funciona
         .then(val => res.send(val));
 })
 
-router.get('/getComenatiosByPostIdTop5/:Id?', (req, res) => {    //funciona
+router.get('/getComentariosByPostIdTop5/:Id?', (req, res) => {    //funciona
     srvPosts.getComentariosByPostIdTop5(req.params.Id)
         .then(val => res.send(val));
 })
