@@ -23,18 +23,17 @@ class etiquetaService{
 
     crearEtiqueta = async (nombre) => {
         let returnEntity = null;
-        console.log('debug en insert')
+        console.log('debug en insert etiquet')
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
               .input('pnombre', sql.NVarChar, nombre)
-              .query("INSERT INTO Posts (nombre) VALUES (@pnombre) SELECT SCOPE_IDENTITY() as 'L'");   
+              .query("INSERT INTO etiquetas(nombre) VALUES (@pnombre) SELECT SCOPE_IDENTITY() as 'L'");   
               returnEntity = result.recordsets;
         }catch(error){
             console.log(error)
         }
-        console.log(returnEntity[0])
-        return returnEntity[0]
+        return returnEntity[0][0]
     }
     
 

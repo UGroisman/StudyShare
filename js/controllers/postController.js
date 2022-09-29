@@ -42,16 +42,42 @@ router.post("/crearPost", async (req, res) => {     //Funciona!!!!
     tags: req.body.tags
     };
     let tags = postCreado.tags;
-    let tagID = {};
-
+    let tagID = 0;
     let idPost= 0;
+    let idEtiquetaCreada=null;
+
+    let tagIDExtra =0;
+    let postIDExtra =0;
+
+
+    //aca se crea el post
     idPost = await srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, 0,postCreado.linkArchivo,postCreado.idMateria);
     // falta el if de que si bo existe esa tag
+
     tags.forEach(async tagNombre=>{ //por cada NOMBRE DE ETIQUETA EN EL ARRAY ETIQUETA
         tagID = await srvEtiqueta.getAffected(tagNombre)  // Te devuelve el ID de la etiqueta a partir del nombre
+
+        if (tagID){
+
+        console.log("Este es el idtag:")
+        console.log(tagID.ID)
+
+        console.log("Este es el idpost:")
+        console.log(idPost.L)
+
         srvPosts.meterEtiquetaAPost(tagID.ID,idPost.L) //tagID en realidad no es un int, sino que no se porque lo pone como {ID : 1}
-            
+        }else{
+            console.log("LA ETIQUETA NO EXISTE")
+            idEtiquetaCreada = await srvEtiqueta.crearEtiqueta(tagNombre);
+            console.log("Ok, id de la nueva tag creada:")
+            console.log(idEtiquetaCreada.L);
+            srvPosts.meterEtiquetaAPost(idEtiquetaCreada.L,idPost.L)
+
+        }
+
         console.log(await srvPosts.getEtiquetasPorId(idPost.L)) 
+
+
         /*if(tagID===0){                              
             idEtiquetaCreada = srvEtiqueta.crearEtiqueta(tagNombre);
             //console.log(idEtiquetaCreada + "AAAAAAAAAAAA");
@@ -92,6 +118,17 @@ router.get('/getVotosByPostID/:Id?', async (req, res) => {    //
     console.log(counter);
     res.status(200).json({cantidad : counter })
     //res.send(counter);
+
+})
+
+router.get('/getPostsPorIdUsuario/:Id?', async (req, res) => {    //
+
+    srvPosts.getPostsPorIdUsuario(req.params.Id)
+    .then(async posts => {
+        for (const post of posts)
+            post.tags = await srvPosts.getEtiquetasPorId(post.ID);
+        res.json(posts);
+    });
 
 })
 
