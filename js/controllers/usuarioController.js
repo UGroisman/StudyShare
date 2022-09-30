@@ -5,10 +5,14 @@ let srvUsuarios = new UsuarioService();
 
 const router = Router();
 
-router.get('/AgarrarUsuarioPorId/:Id?', (req, res) => {   //Funciona
+router.get('/AgarrarUsuarioPorId/:Id?', async (req, res) => {   //Funciona
     const Id = req.params.Id;
-    srvUsuarios.getById(Id)
-        .then(val => res.send(val))     
+    let usuarioAMandar = await srvUsuarios.getById(Id)
+    if (usuarioAMandar){
+        res.send(usuarioAMandar)
+    }else{
+        res.send("404")
+    }
 })
 
 router.post("/crearUsuario", function (req, res) {   //Funciona

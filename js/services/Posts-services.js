@@ -57,7 +57,11 @@ class PostService{
             .query(query)
             .catch(console.error);
         returnEntity = rows.recordsets;
+        if (returnEntity){
         return returnEntity[0];
+        }else{
+            return "404";
+        }
     }
 
 

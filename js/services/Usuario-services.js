@@ -29,7 +29,12 @@ class UsuarioService{
         }catch(error){
             console.log(error)
         }
+        if (returnEntity){
         return returnEntity[0][0]
+        }else{
+            returnEntity={"Error":"404"}
+            return returnEntity;
+        }
     }
 
     getByName = async (nombre) => {
