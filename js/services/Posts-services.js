@@ -176,7 +176,7 @@ class PostService{
               .input('pidUsuario', sql.Int, idUsuario)
               .input('plink', sql.NVarChar, linkArchivo)
               .input('pidMateria', sql.Int, idMateria)
-              .input('pidMateria', sql.Int, today)
+              .input('pdate', sql.Date, today)
               .query("INSERT INTO Posts (idUsuario,tipo, titulo, descripcion, Puntuacion,linkArchivo,IdMateria,fecha) VALUES (@pidUsuario,@ptipo, @ptitulo, @pdescripcion, @ppuntuacion,@plink,@pidMateria,@pdate) SELECT SCOPE_IDENTITY() as 'L'");
                     
               idPost = result.recordsets[0][0];

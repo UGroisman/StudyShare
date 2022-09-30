@@ -16,10 +16,10 @@ router.get('', async (req, res) => {
 
 router.get('/TraerPostsMasRecientes/', async (req, res) => {    //Funciona
     srvPosts.get5MoreRecent()
-        .then(async posts => {
-            for (const post of posts)
+        .then(async postss => {
+            for (const post of postss)
                 post.tags = await srvPosts.getEtiquetasPorId(post.ID);
-            res.json(posts);
+            res.json(postss);
         });
 })
 
@@ -48,7 +48,9 @@ router.post("/crearPost", async (req, res) => {     //Funciona!!!!
 
     let tagIDExtra =0;
     let postIDExtra =0;
-
+    let today= new Date()
+    console.log("DIAAAAAAAAAA")
+    console.log(today);
 
     //aca se crea el post
     idPost = await srvPosts.insert(postCreado.idUsuario,postCreado.tipo, postCreado.titulo, postCreado.descripcion, 0,postCreado.linkArchivo,postCreado.idMateria);
