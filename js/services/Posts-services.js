@@ -153,6 +153,65 @@ class PostService{
 
     }
 
+
+    getVotoHechoAPostPorIDUsuario = async (IDs,PostIDs) => {
+        let returnEntity = null;
+        console.log('debug en get by id')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pId', sql.Int, IDs)
+                    .input('pPId', sql.Int, PostIDs)
+                    .query("select * from UsuarioPuntajeAPost where IdUsuario = @pId and IdPost = @pPId");
+                    
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0][0]
+
+    }
+
+    updateVotoHechoAPostPorIDUsuario = async (IDs,PostIDs,Voto) => {
+        let returnEntity = null;
+        console.log('debug en Voto hecho a post por id usuario')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pId', sql.Int, IDs)
+                    .input('pPId', sql.Int, PostIDs)
+                    .input('pVoto', sql.Int, Voto)
+                    .query("update UsuarioPuntajeAPost set Voto = @pVoto where IdUsuario = @pId and IdPost = @pPId");
+                    
+            returnEntity = result.rowsAffected;
+            console.log(returnEntity)
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0][0]
+
+    }
+
+    InsertVotoHechoAPostPorIDUsuario = async (IDs,PostIDs,Voto) => {
+        let returnEntity = null;
+        console.log('debug en insert Voto hecho a post por id usuario')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pId', sql.Int, IDs)
+                    .input('pPId', sql.Int, PostIDs)
+                    .input('pVoto', sql.Int, Voto)
+                    .query("INSERT INTO UsuarioPuntajeAPost(IdUsuario,IdPost,Voto) VALUES (@pId, @pPId, @pVoto)");
+                    
+            returnEntity = result.rowsAffected;
+            console.log(returnEntity)
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0][0]
+
+    }
+
     meterEtiquetaAPost = async (tagID,postID) => {
         let rowsAffected = null;
 

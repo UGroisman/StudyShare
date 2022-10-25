@@ -133,6 +133,44 @@ router.get('/getPostsPorIdUsuario/:Id?', async (req, res) => {    //
     });
 
 })
+/*
+router.get('/getVotoPorUsuario/:Id?', async (req, res) => {    //
+
+    srvPosts.getPostsPorIdUsuario(req.params.Id)
+    .then(async posts => {
+        for (const post of posts)
+            post.tags = await srvPosts.getEtiquetasPorId(post.ID);
+        res.json(posts);
+    });
+
+})*/
+
+
+router.post('/updateVoto/', async (req, res) => {    //
+
+    let idUsuario = req.body.idUsuario
+    let idPost = req.body.idPost
+    let voto = req.body.voto
+    if (!await srvPosts.getVotoHechoAPostPorIDUsuario(idUsuario,idPost)){
+        //Si no existe, lo creas
+        srvPosts.InsertVotoHechoAPostPorIDUsuario(idUsuario,idPost,voto)
+    } else{
+        //Si ya existe, lo updateas
+        srvPosts.updateVotoHechoAPostPorIDUsuario(idUsuario,idPost,voto)
+    }
+
+    res.send("LOOL")
+
+
+
+    /*srvPosts.getPostsPorIdUsuario(req.params.Id)
+    .then(async posts => {
+        for (const post of posts)
+            post.tags = await srvPosts.getEtiquetasPorId(post.ID);
+        res.json(posts);
+    });*/
+
+})
 
 export default router;
 
