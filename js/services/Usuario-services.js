@@ -18,23 +18,33 @@ class UsuarioService{
 
     getById = async (ID) => {
         let returnEntity = null;
-        console.log('debug en getbidi')
+        console.log('debug en getbidiiii')
+        console.log(typeof ID)
         try {
+            if (/^[0-9]*$/.test(ID)){
             let pool = await sql.connect(config);
             let result = await pool.request()
                     .input('pId', sql.Int, ID)
                     .query("select * from Usuario where ID = @pId");
                     
             returnEntity = result.recordsets;
+            }else{
+                returnEntity=[["404"]]
+            }
         }catch(error){
             console.log(error)
         }
         if (returnEntity){
-        return returnEntity[0][0]
+            console.log(returnEntity[0][0])
+            return returnEntity[0][0]
         }else{
             returnEntity={"Error":"404"}
             return returnEntity;
         }
+         /*}else{
+            returnEntity={"Error":"404"}
+            return returnEntity;
+         }*/
     }
 
     getByName = async (nombre) => {

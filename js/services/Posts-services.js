@@ -51,6 +51,8 @@ class PostService{
     getPostsPorIdUsuario = async (IDs) => {
         let returnEntity = null;
         const query = "select Usuario.nombre, P.*, Materia.Nombre as Materia, Materia.ColorCode as Color from Posts P inner join Usuario on P.idUsuario = Usuario.ID inner join Materia on P.IdMateria = Materia.ID where idUsuario = @pId";
+        
+        if (/^[0-9]*$/.test(IDs)){
         const pool = await sql.connect(config);
         const rows = await pool.request()
             .input('pId', sql.Int, IDs)
@@ -62,6 +64,9 @@ class PostService{
         }else{
             return "404";
         }
+    }else{
+        return "404";
+    }
     }
 
 

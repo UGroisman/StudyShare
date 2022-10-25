@@ -7,6 +7,12 @@ const router = Router();
 
 router.get('/AgarrarUsuarioPorId/:Id?', async (req, res) => {   //Funciona
     const Id = req.params.Id;
+    console.log(typeof Id);
+    parseInt(Id);
+    console.log (typeof Id);
+
+    console.log(/^[0-9]*$/.test(Id));
+
     let usuarioAMandar = await srvUsuarios.getById(Id)
     if (usuarioAMandar){
         res.send(usuarioAMandar)
