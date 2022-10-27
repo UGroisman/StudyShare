@@ -212,6 +212,26 @@ class PostService{
 
     }
 
+
+    FiltroBusquedaPost1 = async (text) => {
+        let returnEntity = null;
+        console.log('debug en get by id')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                    .input('pText', sql.NVarChar, text)            
+                    .query("select * from Posts P inner join EtiquetasPorPost on P.ID = EtiquetasPorPost.IdPost inner join etiquetas E on EtiquetasPorPost.IdEtiqueta = E.ID inner join Usuario U on P.idUsuario = U.ID WHERE P.titulo LIKE @pText OR E.nombre LIKE @pText OR U.nombre LIKE @pText order by P.fecha desc");
+                    
+            returnEntity = result.recordsets;
+        }catch(error){
+            console.log(error)
+        }
+        return returnEntity[0][0]
+
+    }
+
+    
+
     meterEtiquetaAPost = async (tagID,postID) => {
         let rowsAffected = null;
 

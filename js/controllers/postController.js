@@ -123,6 +123,19 @@ router.get('/getVotosByPostID/:Id?', async (req, res) => {    //
 
 })
 
+router.get('/getFiltroBusquedaPost1/:Titulo?', async (req, res) => {    //
+
+    const Titulo = req.params.Titulo;//eee ???
+    srvPosts.FiltroBusquedaPost1(Titulo)
+        .then(val => res.send(val))    
+    
+
+    //console.log(val);
+    //res.status(200).json({cantidad : counter })
+    //res.send(counter);
+
+})
+
 router.get('/getPostsPorIdUsuario/:Id?', async (req, res) => {    //
 
     srvPosts.getPostsPorIdUsuario(req.params.Id)
